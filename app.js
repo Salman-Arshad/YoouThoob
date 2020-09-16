@@ -29,14 +29,14 @@ var _colors = require("colors");
 // )).on('progress',function(state){
 //   bar.tick(state.percent);
 // })
-
+const progressBar = new _cliProgress.MultiBar(
+    {
+        format: "Downloading  Kangana Tera Ni - ABEER ARORA | Hardbazy (VIDEO)|" + _colors.cyan("{bar}") + "| {percentage}% || {value}/{total} Chunks || Speed: {speed}",
+    },
+    _cliProgress.Presets.shades_classic
+);
 const download = (url, filename, callback) => {
-    const progressBar = new _cliProgress.SingleBar(
-        {
-            format: "Downloading  Kangana Tera Ni - ABEER ARORA | Hardbazy (VIDEO)|" + _colors.cyan("{bar}") + "| {percentage}% || {value}/{total} Chunks || Speed: {speed}",
-        },
-        _cliProgress.Presets.shades_classic
-    );
+    
 
     const file = fs.createWriteStream(filename);
     let receivedBytes = 0;
@@ -53,15 +53,15 @@ const download = (url, filename, callback) => {
             }
 
             const totalBytes = response.headers["content-length"];
-            progressBar.start((totalBytes / (1048576.0)).toFixed(2), 0);
+            progressBar.create(parseFloat((totalBytes / (1048576.0)).toFixed(2)), 0);
         })
         .on("data", (chunk) => {
             // console.log(chunk.length);
-            mbs = chunk.length / 1048576.0;
+            mbs = chunk.length/(1024*1024)
             receivedBytes += mbs
-            receivedBytes=(parseFloat(receivedBytes.toFixed(2)))
+            let receivedBytes2=(parseFloat(receivedBytes.toFixed(2)))
             // console.log()
-            progressBar.update(receivedBytes);
+            progressBar.update(receivedBytes2);
         })
         .pipe(file)
         .on("error", (err) => {
@@ -82,6 +82,9 @@ const download = (url, filename, callback) => {
     });
 };
 
-download("https://jji.ijjiii.is/e6a8610482cb8c6061776682da8c31ad/8_Yz2hUmfIU/ccczsszcsmzo", "2.mp3", (e) => {
+download("https://lii.ijjiii.is/7f63a1056ff95d913e156354fe632204/yJg-Y5byMMw/cccxssxcsoxcea", "6.mp3", (e) => {
+    if (e) console.log(e);
+});
+download("https://lii.ijjiii.is/1307a6cc9dcc0fc768ad1c52c31b574b/b5BNUa_op2o/cccxssxcsoxcea", "5.mp3", (e) => {
     if (e) console.log(e);
 });

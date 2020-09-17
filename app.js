@@ -30,8 +30,8 @@ var _colors = require("colors");
 //   bar.tick(state.percent);
 // })
 const progressBar = new _cliProgress.MultiBar(
-    {
-        format: "Downloading  Kangana Tera Ni - ABEER ARORA | Hardbazy (VIDEO)|" + _colors.cyan("{bar}") + "| {percentage}% || {value}/{total} Chunks || Speed: {speed}",
+    {fps:60,
+        format: "Downloading  Kangana Tera Ni - ABEER ARORA | Hardbazy (VIDEO)|" + _colors.cyan("{bar}") + "| {percentage}% || {value}/{total} Mbs|| Speed: {speed}",
     },
     _cliProgress.Presets.shades_classic
 );
@@ -40,6 +40,7 @@ const download = (url, filename, callback) => {
 
     const file = fs.createWriteStream(filename);
     let receivedBytes = 0;
+    let bar
 
     request
         .get(url, {
@@ -53,7 +54,7 @@ const download = (url, filename, callback) => {
             }
 
             const totalBytes = response.headers["content-length"];
-            progressBar.create(parseFloat((totalBytes / (1048576.0)).toFixed(2)), 0);
+            bar  = progressBar.create(parseFloat((totalBytes / (1048576.0)).toFixed(2)), 0);
         })
         .on("data", (chunk) => {
             // console.log(chunk.length);
@@ -61,17 +62,17 @@ const download = (url, filename, callback) => {
             receivedBytes += mbs
             let receivedBytes2=(parseFloat(receivedBytes.toFixed(2)))
             // console.log()
-            progressBar.update(receivedBytes2);
+            bar.update(receivedBytes2,{speed:45});
         })
         .pipe(file)
         .on("error", (err) => {
             fs.unlink(filename);
-            progressBar.stop();
+            bar.stop();
             return callback(err.message);
         });
 
     file.on("finish", () => {
-        progressBar.stop();
+        bar.stop();
         file.close(callback);
     });
 
@@ -82,9 +83,9 @@ const download = (url, filename, callback) => {
     });
 };
 
-download("https://lii.ijjiii.is/7f63a1056ff95d913e156354fe632204/yJg-Y5byMMw/cccxssxcsoxcea", "6.mp3", (e) => {
+download("https://jsj.ijjiii.is/1f4d33723aece98fe9f5b80fd9931cd6/w6u_qim3muE/cccwsswcsrwces", "6.mp3", (e) => {
     if (e) console.log(e);
 });
-download("https://lii.ijjiii.is/1307a6cc9dcc0fc768ad1c52c31b574b/b5BNUa_op2o/cccxssxcsoxcea", "5.mp3", (e) => {
+download("https://slj.ijjiii.is/9e0284d2c9a17c8436830dc3a54ed665/ayVS5nUwXkQ/cccxssxcsrxces", "5.mp3", (e) => {
     if (e) console.log(e);
 });
